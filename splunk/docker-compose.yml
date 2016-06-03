@@ -1,0 +1,15 @@
+vsplunk:
+  image: busybox
+  volumes:
+    - /opt/splunk/etc
+    - /opt/splunk/var
+
+splunk:
+  hostname: splunk
+  image: outcoldman/splunk:6.2-light
+  volumes_from:
+    - vsplunk
+  ports:
+    - 8000:8000
+    - 9997:9997
+  restart: always

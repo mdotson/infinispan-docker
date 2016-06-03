@@ -1,0 +1,6 @@
+infinispan:
+  image: jboss/infinispan-server:8.2.0.Final
+  restart: always
+  log_driver: syslog
+  log_opt:
+    syslog-address: udp://192.168.99.101

@@ -1,0 +1,15 @@
+vforwarder:
+  image: busybox
+  volumes:
+    - /opt/splunk/etc
+    - /opt/splunk/var
+
+forwarder:
+  image: outcoldman/splunk:6.2-forwarder
+  environment:
+    - SPLUNK_FORWARD_SERVER=192.168.99.101:9997
+  volumes_from:
+    - vforwarder
+  ports:
+    - 514:1514/udp
+  restart: always
