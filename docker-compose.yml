@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  vforwarder:
+    image: busybox
+    volumes:
+      - /opt/splunk/etc
+      - /opt/splunk/var
+
+  vsplunk:
+    image: busybox
+    volumes:
+      - /opt/splunk/etc
+      - /opt/splunk/var
+
+  forwarder:
+    image: outcoldman/splunk:6.4-forwarder
+    environment:
+      SPLUNK_FORWARD_SERVER: splunk:9997
+      SPLUNK_ADD: tcp 6666
+      SPLUNK_START_ARGS: --accept-license
+    extra_hosts:
+     - "splunk:${SPLUNK_FROM_PUPPET}"
+    volumes_from:
+      - vforwarder
+    depends_on:
+      - splunk
+    restart: always
+    ports:
+    - 6666:6666
+
+  splunk:
+    hostname: splunk
+    image: outcoldman/splunk:6.4-light
+    environment:
+      SPLUNK_ENABLE_LISTEN: 9997
+      SPLUNK_START_ARGS: --accept-license
+    volumes_from:
+      - vsplunk
+    ports:
+      - 8000:8000
+    restart: always
+
+  infinispan:
+    image: jboss/infinispan-server:8.2.0.Final
+    depends_on:
+      - forwarder
+    restart: always
+    logging:
+      driver: syslog
+      options:
+        syslog-address: tcp://localhost:6666
