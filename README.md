@@ -14,3 +14,5 @@ This repository contains a setup for:
 
 # Infinispan
     docker-compose -f infinispan/docker-compose.yml up -d
+    
+This repository is based on [this article](http://blogs.splunk.com/2015/08/24/collecting-docker-logs-and-stats-with-splunk/)
