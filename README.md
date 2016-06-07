@@ -6,7 +6,7 @@ This repository contains a setup for:
 
 Run with:
 
-    export SPLUNK_FROM_PUPPET=$(echo $DOCKER_HOST | awk -F/ '{print $3}' | awk -F: '{print $1}')
+    export SPLUNK_FROM_PUPPET="localhost" && docker-compose up
 
 Will probably remove these, so just use the command above instead:
 

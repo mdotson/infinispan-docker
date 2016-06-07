@@ -17,7 +17,7 @@ services:
     image: outcoldman/splunk:6.4-forwarder
     environment:
       SPLUNK_FORWARD_SERVER: splunk:9997
-      SPLUNK_ADD: udp 1514
+      SPLUNK_CMD: add tcp 6666 -sourcetype log4j -auth admin:changeme
       SPLUNK_START_ARGS: --accept-license
     extra_hosts:
      - "splunk:${SPLUNK_FROM_PUPPET}"
@@ -27,7 +27,7 @@ services:
       - splunk
     restart: always
     ports:
-    - 1514:1514
+    - 6666:6666
 
   splunk:
     hostname: splunk
@@ -49,4 +49,4 @@ services:
     logging:
       driver: syslog
       options:
-        syslog-address: udp://localhost:1514
+        syslog-address: tcp://localhost:6666
